@@ -1,5 +1,5 @@
 window.addEventListener('DOMContentLoaded', () => {
-    const canvas = document.getElementById('neurons-canvas');
+    const canvas = document.getElementById('neurons-bg');
     const ctx = canvas.getContext('2d');
 
     let width, height;
