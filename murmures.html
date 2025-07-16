@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Murmures Numériques</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f5f7fa;
+      margin: 0;
+      padding: 0;
+      color: #222;
+    }
+    header {
+      background: #3b7ea1;
+      color: white;
+      padding: 1em;
+      text-align: center;
+    }
+    h1 {
+      margin: 0;
+      font-size: 2em;
+    }
+    .container {
+      max-width: 800px;
+      margin: auto;
+      padding: 1em;
+    }
+    .entry {
+      margin-bottom: 2em;
+      animation: fadeIn 0.5s ease-in;
+    }
+    .meta {
+      font-size: 0.9em;
+      color: #666;
+      margin-bottom: 0.5em;
+    }
+    .line {
+      margin: 0.3em 0;
+      max-width: 90%;
+      padding: 0.6em 1em;
+      border-radius: 12px;
+      display: inline-block;
+      animation: typing 0.05s steps(40, end);
+      white-space: pre-line;
+    }
+    .human {
+      background: #fef9e7;
+      font-family: 'Patrick Hand', cursive;
+      text-align: left;
+    }
+    .ai {
+      background: #e8f4fd;
+      color: #1a4f72;
+      font-family: 'Segoe UI', sans-serif;
+      text-align: right;
+      float: right;
+    }
+    footer {
+      text-align: center;
+      font-size: 0.9em;
+      color: #888;
+      margin-top: 3em;
+      padding-bottom: 2em;
+    }
+    .contact {
+      margin-top: 2em;
+      text-align: center;
+    }
+    .contact a {
+      text-decoration: none;
+      color: #3b7ea1;
+      font-weight: bold;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<header>
+  <h1>Murmures Numériques</h1>
+  <p>Fragments de dialogues entre humain et intelligence</p>
+</header>
+
+<div class="container" id="chatContainer">
+  <!-- Les extraits seront chargés ici -->
+</div>
+
+<div class="contact">
+  <p>Vous souhaitez proposer vos propres échanges IA marquants ?</p>
+  <a href="mailto:contactiartisanale@gmail.com">📩 Me contacter</a>
+</div>
+
+<footer>
+  &copy; IArtisanale – 2025
+</footer>
+
+<script>
+async function loadChats() {
+  const res = await fetch('murmures.json');
+  const data = await res.json();
+  const container = document.getElementById('chatContainer');
+
+  data.forEach(entry => {
+    const div = document.createElement('div');
+    div.className = 'entry';
+    const meta = document.createElement('div');
+    meta.className = 'meta';
+    meta.innerText = `🕰️ ${entry.ia} • ${entry.date}`;
+    div.appendChild(meta);
+
+    entry.lines.forEach(line => {
+      const p = document.createElement('div');
+      p.className = 'line ' + (line.speaker.toLowerCase().includes('humain') ? 'human' : 'ai');
+      p.innerText = `${line.speaker} : ${line.text}`;
+      div.appendChild(p);
+    });
+
+    const clear = document.createElement('div');
+    clear.style.clear = "both";
+    div.appendChild(clear);
+
+    container.appendChild(div);
+  });
+}
+
+loadChats();
+</script>
+
+</body>
+</html>
