@@ -2,15 +2,11 @@ document.addEventListener("DOMContentLoaded", () => {
     const canvas = document.getElementById('neurons-bg');
     if (!canvas) return;
 
+    // Fix critique : définition des attributs HTML (et non CSS seulement)
+    canvas.setAttribute('width', window.innerWidth);
+    canvas.setAttribute('height', window.innerHeight);
+
     const ctx = canvas.getContext('2d');
-
-    function resizeCanvas() {
-        const width = window.innerWidth;
-        const height = window.innerHeight;
-        canvas.width = width;
-        canvas.height = height;
-    }
-
     let points = [];
 
     function generatePoints() {
@@ -62,12 +58,14 @@ document.addEventListener("DOMContentLoaded", () => {
         requestAnimationFrame(draw);
     }
 
+    function resizeCanvas() {
+        canvas.setAttribute('width', window.innerWidth);
+        canvas.setAttribute('height', window.innerHeight);
+        generatePoints();
+    }
+
     resizeCanvas();
-    generatePoints();
     draw();
 
-    window.addEventListener('resize', () => {
-        resizeCanvas();
-        generatePoints();
-    });
+    window.addEventListener('resize', resizeCanvas);
 });
