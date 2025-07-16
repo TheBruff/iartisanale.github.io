@@ -1,55 +1,55 @@
+
 document.addEventListener("DOMContentLoaded", () => {
-    const canvas = document.getElementById('neurons-bg');
-    if (!canvas) return;
+    const canvas = document.getElementById("neurons-bg");
+    const ctx = canvas.getContext("2d");
 
-    // Fix critique : définition des attributs HTML (et non CSS seulement)
-    canvas.setAttribute('width', window.innerWidth);
-    canvas.setAttribute('height', window.innerHeight);
+    let width = canvas.width = window.innerWidth;
+    let height = canvas.height = window.innerHeight;
 
-    const ctx = canvas.getContext('2d');
-    let points = [];
+    new ResizeObserver(() => {
+        width = canvas.width = window.innerWidth;
+        height = canvas.height = window.innerHeight;
+    }).observe(document.body);
 
-    function generatePoints() {
-        const width = canvas.width;
-        const height = canvas.height;
-        const numPoints = Math.floor((width + height) / 80);
-        points = [];
-        for (let i = 0; i < 60; i++) {
-            points.push({
-                x: Math.random() * width,
-                y: Math.random() * height,
-                vx: (Math.random() - 0.5) * 0.5,
-                vy: (Math.random() - 0.5) * 0.5
-            });
-        }
+    const numPoints = 60;
+    const points = [];
+
+    for (let i = 0; i < numPoints; i++) {
+        points.push({
+            x: Math.random() * width,
+            y: Math.random() * height,
+            vx: (Math.random() - 0.5) * 0.5,
+            vy: (Math.random() - 0.5) * 0.5
+        });
     }
 
     function draw() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.clearRect(0, 0, width, height);
 
-        for (let p of points) {
+        for (let i = 0; i < numPoints; i++) {
+            const p = points[i];
             p.x += p.vx;
             p.y += p.vy;
 
-            if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
-            if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+            if (p.x < 0 || p.x > width) p.vx *= -1;
+            if (p.y < 0 || p.y > height) p.vy *= -1;
 
             ctx.beginPath();
-            ctx.arc(p.x, p.y, 1.5, 0, Math.PI * 2);
-            ctx.fillStyle = 'rgba(97, 168, 218, 0.5)';
+            ctx.arc(p.x, p.y, 2, 0, Math.PI * 2);
+            ctx.fillStyle = "#61a8da";
             ctx.fill();
         }
 
-        for (let i = 0; i < points.length; i++) {
-            const p1 = points[i];
-            for (let j = i + 1; j < points.length; j++) {
-                const p2 = points[j];
-                const dist = Math.hypot(p1.x - p2.x, p1.y - p2.y);
+        for (let i = 0; i < numPoints; i++) {
+            for (let j = i + 1; j < numPoints; j++) {
+                const dx = points[i].x - points[j].x;
+                const dy = points[i].y - points[j].y;
+                const dist = Math.sqrt(dx * dx + dy * dy);
                 if (dist < 120) {
                     ctx.beginPath();
-                    ctx.moveTo(p1.x, p1.y);
-                    ctx.lineTo(p2.x, p2.y);
-                    ctx.strokeStyle = 'rgba(97, 168, 218, 0.2)';
+                    ctx.moveTo(points[i].x, points[i].y);
+                    ctx.lineTo(points[j].x, points[j].y);
+                    ctx.strokeStyle = "rgba(97, 168, 218, " + (1 - dist / 120) + ")";
                     ctx.stroke();
                 }
             }
@@ -58,14 +58,5 @@ document.addEventListener("DOMContentLoaded", () => {
         requestAnimationFrame(draw);
     }
 
-    function resizeCanvas() {
-        canvas.setAttribute('width', window.innerWidth);
-        canvas.setAttribute('height', window.innerHeight);
-        generatePoints();
-    }
-
-    resizeCanvas();
     draw();
-
-    window.addEventListener('resize', resizeCanvas);
 });
