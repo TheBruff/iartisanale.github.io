@@ -14,12 +14,12 @@ document.addEventListener("DOMContentLoaded", () => {
         const height = canvas.height;
         const numPoints = Math.floor((width + height) / 80);
         points = [];
-        for (let i = 0; i < numPoints; i++) {
+        for (let i = 0; i < 60; i++) {
             points.push({
                 x: Math.random() * width,
                 y: Math.random() * height,
-                vx: (Math.random() - 0.5) * 0.3,
-                vy: (Math.random() - 0.5) * 0.3
+                vx: (Math.random() - 0.5) * 0.5,
+                vy: (Math.random() - 0.5) * 0.5
             });
         }
     }
