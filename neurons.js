@@ -1,67 +1,59 @@
-(() => {
-    const canvas = document.createElement('canvas');
-    canvas.id = 'neurons-canvas';
-    canvas.style.position = 'fixed';
-    canvas.style.top = '0';
-    canvas.style.left = '0';
-    canvas.style.width = '100vw';
-    canvas.style.height = '100vh';
-    canvas.style.zIndex = '-1';
-    canvas.style.opacity = '0.15';
-    canvas.style.pointerEvents = 'none';
-    document.body.appendChild(canvas);
 
-    const ctx = canvas.getContext('2d');
-    let width = canvas.width = window.innerWidth;
-    let height = canvas.height = window.innerHeight;
+const canvas = document.getElementById('neurons-canvas');
+const ctx = canvas.getContext('2d');
 
-    window.addEventListener('resize', () => {
-        width = canvas.width = window.innerWidth;
-        height = canvas.height = window.innerHeight;
-    });
+let width, height;
+let points = [];
 
-    const nodes = Array.from({ length: 40 }, () => ({
-        x: Math.random() * width,
-        y: Math.random() * height,
-        dx: (Math.random() - 0.5) * 0.8,
-        dy: (Math.random() - 0.5) * 0.8
-    }));
+function resizeCanvas() {
+    width = canvas.width = window.innerWidth;
+    height = canvas.height = window.innerHeight;
+    generatePoints();
+}
 
-    function draw() {
-        ctx.clearRect(0, 0, width, height);
-        ctx.fillStyle = '#61a8da';
+function generatePoints() {
+    points = [];
+    const numPoints = Math.floor((width * height) / 8000);
+    for (let i = 0; i < numPoints; i++) {
+        points.push({
+            x: Math.random() * width,
+            y: Math.random() * height,
+            vx: (Math.random() - 0.5) * 0.3,
+            vy: (Math.random() - 0.5) * 0.3
+        });
+    }
+}
 
-        for (let node of nodes) {
-            ctx.beginPath();
-            ctx.arc(node.x, node.y, 2.5, 0, Math.PI * 2);
-            ctx.fill();
-        }
+function draw() {
+    ctx.clearRect(0, 0, width, height);
+    for (let i = 0; i < points.length; i++) {
+        const p1 = points[i];
+        p1.x += p1.vx;
+        p1.y += p1.vy;
 
-        ctx.strokeStyle = '#61a8da55';
-        for (let i = 0; i < nodes.length; i++) {
-            for (let j = i + 1; j < nodes.length; j++) {
-                const dx = nodes[i].x - nodes[j].x;
-                const dy = nodes[i].y - nodes[j].y;
-                const dist = Math.sqrt(dx * dx + dy * dy);
-                if (dist < 120) {
-                    ctx.beginPath();
-                    ctx.moveTo(nodes[i].x, nodes[i].y);
-                    ctx.lineTo(nodes[j].x, nodes[j].y);
-                    ctx.stroke();
-                }
+        if (p1.x < 0 || p1.x > width) p1.vx *= -1;
+        if (p1.y < 0 || p1.y > height) p1.vy *= -1;
+
+        ctx.beginPath();
+        ctx.arc(p1.x, p1.y, 1.5, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(97, 168, 218, 0.7)';
+        ctx.fill();
+
+        for (let j = i + 1; j < points.length; j++) {
+            const p2 = points[j];
+            const dist = Math.hypot(p1.x - p2.x, p1.y - p2.y);
+            if (dist < 100) {
+                ctx.beginPath();
+                ctx.moveTo(p1.x, p1.y);
+                ctx.lineTo(p2.x, p2.y);
+                ctx.strokeStyle = 'rgba(97, 168, 218, 0.2)';
+                ctx.stroke();
             }
         }
-
-        for (let node of nodes) {
-            node.x += node.dx;
-            node.y += node.dy;
-
-            if (node.x < 0 || node.x > width) node.dx *= -1;
-            if (node.y < 0 || node.y > height) node.dy *= -1;
-        }
-
-        requestAnimationFrame(draw);
     }
+    requestAnimationFrame(draw);
+}
 
-    draw();
-})();
+window.addEventListener('resize', resizeCanvas);
+resizeCanvas();
+draw();
