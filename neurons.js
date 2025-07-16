@@ -1,6 +1,5 @@
-document.addEventListener("DOMContentLoaded", () => {
+window.addEventListener('DOMContentLoaded', () => {
     const canvas = document.getElementById('neurons-canvas');
-    if (!canvas) return;
     const ctx = canvas.getContext('2d');
 
     let width, height;
@@ -13,8 +12,9 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function generatePoints() {
-        points = [];
         const numPoints = Math.floor((width + height) / 80);
+        points = [];
+
         for (let i = 0; i < numPoints; i++) {
             points.push({
                 x: Math.random() * width,
@@ -27,8 +27,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function draw() {
         ctx.clearRect(0, 0, width, height);
+
         for (let i = 0; i < points.length; i++) {
             const p = points[i];
+
             p.x += p.vx;
             p.y += p.vy;
 
@@ -39,15 +41,21 @@ document.addEventListener("DOMContentLoaded", () => {
             ctx.arc(p.x, p.y, 1.5, 0, Math.PI * 2);
             ctx.fillStyle = 'rgba(97, 168, 218, 0.7)';
             ctx.fill();
+        }
 
+        for (let i = 0; i < points.length; i++) {
             for (let j = i + 1; j < points.length; j++) {
+                const p1 = points[i];
                 const p2 = points[j];
-                const dist = Math.hypot(p.x - p2.x, p.y - p2.y);
+                const dx = p1.x - p2.x;
+                const dy = p1.y - p2.y;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+
                 if (dist < 100) {
                     ctx.beginPath();
-                    ctx.moveTo(p.x, p.y);
+                    ctx.moveTo(p1.x, p1.y);
                     ctx.lineTo(p2.x, p2.y);
-                    ctx.strokeStyle = 'rgba(97, 168, 218, 0.1)';
+                    ctx.strokeStyle = 'rgba(97, 168, 218, 0.2)';
                     ctx.stroke();
                 }
             }
@@ -60,4 +68,3 @@ document.addEventListener("DOMContentLoaded", () => {
     resizeCanvas();
     draw();
 });
-
