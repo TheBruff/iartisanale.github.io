@@ -1,5 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
     const canvas = document.getElementById('neurons-bg');
+    if (!canvas) return;
+
     const ctx = canvas.getContext('2d');
 
     function resizeCanvas() {
@@ -7,8 +9,6 @@ document.addEventListener("DOMContentLoaded", () => {
         const height = window.innerHeight;
         canvas.width = width;
         canvas.height = height;
-        canvas.style.width = width + 'px';
-        canvas.style.height = height + 'px';
     }
 
     let points = [];
