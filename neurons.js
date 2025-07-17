@@ -1,12 +1,16 @@
-window.onload = function () {
+// neurons.js (version corrigée pour GitHub Pages)
+window.addEventListener("load", () => {
   const canvas = document.getElementById("neurons-bg");
+  if (!canvas) {
+    console.error("Canvas neurons-bg introuvable.");
+    return;
+  }
   const ctx = canvas.getContext("2d");
 
   function resizeCanvas() {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
   }
-
   resizeCanvas();
   window.addEventListener("resize", resizeCanvas);
 
@@ -24,40 +28,35 @@ window.onload = function () {
 
   function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    // Dessin des lignes entre points proches
     for (let i = 0; i < numPoints; i++) {
+      const p = points[i];
+      p.x += p.vx;
+      p.y += p.vy;
+
+      if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
+      if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, 2, 0, Math.PI * 2);
+      ctx.fillStyle = "rgba(97, 168, 218, 0.7)";
+      ctx.fill();
+
       for (let j = i + 1; j < numPoints; j++) {
-        const dx = points[i].x - points[j].x;
-        const dy = points[i].y - points[j].y;
+        const q = points[j];
+        const dx = p.x - q.x;
+        const dy = p.y - q.y;
         const dist = Math.sqrt(dx * dx + dy * dy);
         if (dist < 120) {
-          ctx.strokeStyle = "rgba(97,168,218,0.2)";
-          ctx.lineWidth = 1;
           ctx.beginPath();
-          ctx.moveTo(points[i].x, points[i].y);
-          ctx.lineTo(points[j].x, points[j].y);
+          ctx.moveTo(p.x, p.y);
+          ctx.lineTo(q.x, q.y);
+          ctx.strokeStyle = `rgba(97, 168, 218, ${1 - dist / 120})`;
           ctx.stroke();
         }
       }
     }
-
-    // Dessin des points
-    for (let i = 0; i < numPoints; i++) {
-      ctx.fillStyle = "rgba(97,168,218,0.6)";
-      ctx.beginPath();
-      ctx.arc(points[i].x, points[i].y, 2, 0, 2 * Math.PI);
-      ctx.fill();
-
-      points[i].x += points[i].vx;
-      points[i].y += points[i].vy;
-
-      if (points[i].x < 0 || points[i].x > canvas.width) points[i].vx *= -1;
-      if (points[i].y < 0 || points[i].y > canvas.height) points[i].vy *= -1;
-    }
-
     requestAnimationFrame(draw);
   }
 
   draw();
-};
+});
