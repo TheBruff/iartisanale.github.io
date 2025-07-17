@@ -2,26 +2,40 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>IArtisanale – IA faite main</title>
   <style>
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      background: transparent;
-      color: #333;
+    html, body {
       margin: 0;
       padding: 0;
+      font-family: 'Segoe UI', sans-serif;
+      color: #333;
+      background-color: black; /* Fallback */
+    }
+
+    #neurons-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1000;
+      background-color: black;
+      pointer-events: none;
+    }
+
+    header {
+      background: transparent;
+      padding: 1em 0 0;
       text-align: center;
     }
-    header {
-      background: #ffffff;
-      padding: 1em 0 0;
-    }
+
     header img {
       width: 100%;
       max-height: 350px;
       object-fit: contain;
     }
+
     a.mail {
       display: inline-block;
       margin-top: 1em;
@@ -29,21 +43,27 @@
       font-weight: bold;
       text-decoration: none;
     }
+
     main {
       padding: 2em 1em;
+      text-align: center;
     }
+
     section {
       max-width: 820px;
       margin: auto;
     }
+
     h2 {
       color: #3b7ea1;
       margin-top: 2em;
     }
+
     p {
       font-size: 1.1em;
       line-height: 1.6;
     }
+
     .button {
       display: inline-block;
       margin-top: 1em;
@@ -54,6 +74,7 @@
       text-decoration: none;
       font-weight: bold;
     }
+
     .grid {
       display: flex;
       flex-wrap: wrap;
@@ -61,24 +82,29 @@
       gap: 1.5em;
       margin-top: 1.5em;
     }
+
     .card {
-      background: #d3ead4;
+      background: #e5f4e3;
       padding: 1em;
       border-radius: 12px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.05);
       width: 260px;
     }
+
     .card img {
       width: 100%;
       border-radius: 6px;
     }
+
     .card h3 {
       margin: 0.5em 0 0.2em;
     }
+
     .card p {
       margin: 0;
       color: #777;
     }
+
     #chatbot {
       background: #f9f9f9;
       padding: 1.5em;
@@ -86,15 +112,18 @@
       margin-top: 3em;
       box-shadow: 0 4px 12px rgba(0,0,0,0.05);
     }
+
     #persona-name {
       font-weight: bold;
       color: #3b7ea1;
       margin-bottom: 0.5em;
     }
+
     #response {
       margin-top: 1em;
       font-style: italic;
     }
+
     footer {
       margin-top: 3em;
       padding: 1.5em;
@@ -103,100 +132,101 @@
     }
   </style>
 </head>
+
 <body>
-<canvas id="neurons-bg" style="position: fixed; top: 0; left: 0; z-index: 0; width: 100vw; height: 100vh; pointer-events: none; opacity: 0.2;"></canvas>
-<header>
-  <div style="position: absolute; top: 1em; right: 1em;">
-    <button onclick="setLang('fr')" style="background:none;border:none;color:#3b7ea1;font-weight:bold;cursor:pointer;">FR</button> |
-    <button onclick="setLang('en')" style="background:none;border:none;color:#3b7ea1;font-weight:bold;cursor:pointer;">EN</button>
-  </div>
-  <img src="banniere-v4.png" alt="Bannière IArtisanale">
-  <a class="mail" href="mailto:contactiartisanale@gmail.com">✉️ Me contacter</a>
-</header>
+  <canvas id="neurons-bg"></canvas>
 
-<main>
-  <section>
-    <h2>🌿 Mes créations IA</h2>
-    <div class="grid">
-      <div class="card">
-        <h3>LES COMPAGNONS SILENCIEUX</h3>
-        <a class="button" href="https://ko-fi.com/s/665c169a95" target="_blank">Voir sur Ko-fi</a>
-      </div>
-      <div class="card">
-        <h3>HumAIn</h3>
-        <p>À venir…</p>
-      </div>
-      <div class="card">
-        <h3>Identités fictives</h3>
-        <p>À venir…</p>
-      </div>
-      <div class="card">
-        <h3>Murmures Numériques</h3>
-        <a class="button" href="murmures.html">Lire les échanges</a>
-      </div>
+  <header>
+    <div style="position: absolute; top: 1em; right: 1em;">
+      <button onclick="setLang('fr')" style="background:none;border:none;color:#3b7ea1;font-weight:bold;cursor:pointer;">FR</button> |
+      <button onclick="setLang('en')" style="background:none;border:none;color:#3b7ea1;font-weight:bold;cursor:pointer;">EN</button>
     </div>
+    <img src="banniere-v4.png" alt="Bannière IArtisanale" />
+    <a class="mail" href="mailto:contactiartisanale@gmail.com">✉️ Me contacter</a>
+  </header>
 
-    <div id="chatbot">
-      <h2>🎙️ Test vocal d’un compagnon IA</h2>
-      <div id="persona-name">...</div>
-      <button onclick="startRecognition()" class="button">🎤 Parler</button>
-      <div id="response"></div>
-    </div>
-  </section>
-</main>
+  <main>
+    <section>
+      <h2>🌿 Mes créations IA</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>LES COMPAGNONS SILENCIEUX</h3>
+          <a class="button" href="https://ko-fi.com/s/665c169a95" target="_blank">Voir sur Ko-fi</a>
+        </div>
+        <div class="card">
+          <h3>HumAIn</h3>
+          <p>À venir…</p>
+        </div>
+        <div class="card">
+          <h3>Identités fictives</h3>
+          <p>À venir…</p>
+        </div>
+        <div class="card">
+          <h3>Murmures Numériques</h3>
+          <a class="button" href="murmures.html">Découvrir</a>
+        </div>
+      </div>
 
-<footer>
-  <p>IArtisanale est un projet d’exploration créative entre IA et humanité ...<br/>
-  Le futur n'existera pas sans l’une ni sans l’autre.</p>
-  <p>– <strong>Le Promptologue –</strong></p>
-</footer>
+      <div id="chatbot">
+        <h2>🎙️ Test vocal d’un compagnon IA</h2>
+        <div id="persona-name">...</div>
+        <button onclick="startRecognition()" class="button">🎤 Parler</button>
+        <div id="response"></div>
+      </div>
+    </section>
+  </main>
 
-<script src="neurons.js" defer></script>
+  <footer>
+    <p>IArtisanale est un projet d’exploration créative entre IA et humanité ...<br/>
+    Le futur n'existera pas sans l’une ni sans l’autre.</p>
+    <p>– <strong>Le Promptologue –</strong></p>
+  </footer>
 
-<script>
-let lang = localStorage.getItem('lang') || (navigator.language.startsWith('fr') ? 'fr' : 'en');
+  <script src="neurons.js"></script>
 
-function setLang(l) {
-  lang = l;
-  localStorage.setItem('lang', l);
-  location.reload();
-}
+  <script>
+    let lang = localStorage.getItem('lang') || (navigator.language.startsWith('fr') ? 'fr' : 'en');
 
-let recognition;
+    function setLang(l) {
+      lang = l;
+      localStorage.setItem('lang', l);
+      location.reload();
+    }
 
-async function startRecognition() {
-  if (!('webkitSpeechRecognition' in window || 'SpeechRecognition' in window)) {
-    alert('Reconnaissance vocale non supportée.');
-    return;
-  }
-  recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
-  recognition.lang = lang === 'fr' ? 'fr-FR' : 'en-US';
-  recognition.interimResults = false;
-  recognition.maxAlternatives = 1;
+    let recognition;
 
-  recognition.onresult = async (event) => {
-    const text = event.results[0][0].transcript;
-    const res = await fetch('https://silent-companions-proxy.onrender.com/api/chat', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ message: text, lang })
-    });
-    const data = await res.json();
-    document.getElementById('persona-name').innerText = '🧠 ' + data.personaName;
-    document.getElementById('response').innerText = data.reply;
-    const utter = new SpeechSynthesisUtterance(data.reply);
-    utter.lang = lang === 'fr' ? 'fr-FR' : 'en-US';
-    speechSynthesis.speak(utter);
-  };
+    async function startRecognition() {
+      if (!('webkitSpeechRecognition' in window || 'SpeechRecognition' in window)) {
+        alert('Reconnaissance vocale non supportée.');
+        return;
+      }
 
-  recognition.onerror = (e) => {
-    alert('Erreur : ' + e.error);
-  };
+      recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+      recognition.lang = lang === 'fr' ? 'fr-FR' : 'en-US';
+      recognition.interimResults = false;
+      recognition.maxAlternatives = 1;
 
-  recognition.start();
-}
-</script>
+      recognition.onresult = async (event) => {
+        const text = event.results[0][0].transcript;
+        const res = await fetch('https://silent-companions-proxy.onrender.com/api/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ message: text, lang })
+        });
+        const data = await res.json();
+        document.getElementById('persona-name').innerText = '🧠 ' + data.personaName;
+        document.getElementById('response').innerText = data.reply;
+        const utter = new SpeechSynthesisUtterance(data.reply);
+        utter.lang = lang === 'fr' ? 'fr-FR' : 'en-US';
+        speechSynthesis.speak(utter);
+      };
 
+      recognition.onerror = (e) => {
+        alert('Erreur : ' + e.error);
+      };
+
+      recognition.start();
+    }
+  </script>
 </body>
 </html>
-
