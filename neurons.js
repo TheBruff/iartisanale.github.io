@@ -1,9 +1,9 @@
 
-// neurons.js - Version 1 : Réseau neuronal statique (fond noir + connexions)
-window.addEventListener("load", () => {
-  const canvas = document.createElement("canvas");
-  canvas.id = "neurons-bg";
-  document.body.appendChild(canvas);
+// neurons.js – Version 1 corrigée (fond statique avec redimensionnement fiable)
+
+function drawNeuralBackground() {
+  const canvas = document.getElementById("neurons-bg");
+  if (!canvas) return;
 
   const ctx = canvas.getContext("2d");
 
@@ -12,6 +12,7 @@ window.addEventListener("load", () => {
     canvas.height = window.innerHeight;
   }
 
+  // Resize on load and when window is resized
   resizeCanvas();
   window.addEventListener("resize", resizeCanvas);
 
@@ -22,7 +23,6 @@ window.addEventListener("load", () => {
 
   const numPoints = 100;
   const radius = Math.min(width, height) * 0.45;
-
   const points = [];
 
   for (let i = 0; i < numPoints; i++) {
@@ -37,7 +37,7 @@ window.addEventListener("load", () => {
   ctx.fillStyle = "black";
   ctx.fillRect(0, 0, width, height);
 
-  // Dessin des connexions
+  // Connexions courbes
   ctx.strokeStyle = "rgba(97, 168, 218, 0.15)";
   ctx.lineWidth = 1.2;
 
@@ -57,7 +57,7 @@ window.addEventListener("load", () => {
     }
   }
 
-  // Dessin des nœuds
+  // Nœuds lumineux
   for (let point of points) {
     ctx.beginPath();
     ctx.arc(point.x, point.y, 2, 0, Math.PI * 2);
@@ -67,4 +67,7 @@ window.addEventListener("load", () => {
     ctx.fill();
     ctx.shadowBlur = 0;
   }
-});
+}
+
+// Attendre que le DOM soit prêt
+window.addEventListener("DOMContentLoaded", drawNeuralBackground);
