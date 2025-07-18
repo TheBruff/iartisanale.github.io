@@ -1,37 +1,33 @@
 <!DOCTYPE html>
-
 <html lang="fr">
 <head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>IArtisanale – IA faite main</title>
-<style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>IArtisanale – IA faite main</title>
+  <style>
     html, body {
       margin: 0;
       padding: 0;
+      height: 100%;
       font-family: 'Segoe UI', sans-serif;
       color: #333;
-      background-color: black; /* Fallback */
+      background-color: black;
     }
 
     #neurons-bg {
-      position: fixed;
+      position: absolute;
       top: 0;
       left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: -10;
+      width: 100vw;
+      height: 100vh;
+      z-index: 0;
       background-color: transparent;
       pointer-events: none;
     }
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: -1000;
-      background-color: black;
-      pointer-events: none;
+
+    header, main, footer {
+      position: relative;
+      z-index: 1;
     }
 
     header {
@@ -47,8 +43,9 @@
     }
 
     a.mail {
-      display: inline-block;
-      margin-top: 1em;
+      display: block;
+      margin: 1em auto;
+      text-align: center;
       color: #3b7ea1;
       font-weight: bold;
       text-decoration: none;
@@ -139,66 +136,62 @@
       padding: 1.5em;
       background: #f0f0f0;
       font-size: 0.9em;
+      text-align: center;
     }
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 0;
-    width: 100vw;
-    height: 100vh;
-    background: transparent;
-}
-  
-    header, main, footer {
-      position: relative;
-      z-index: 2;
-    }
-</style>
+  </style>
 </head>
-<body><canvas id="neurons-bg"></canvas><header>
-<div style="position: absolute; top: 1em; right: 1em;">
-<button onclick="setLang('fr')" style="background:none;border:none;color:#3b7ea1;font-weight:bold;cursor:pointer;">FR</button> |
+<body>
+  <canvas id="neurons-bg"></canvas>
+
+  <header>
+    <div style="position: absolute; top: 1em; right: 1em;">
+      <button onclick="setLang('fr')" style="background:none;border:none;color:#3b7ea1;font-weight:bold;cursor:pointer;">FR</button> |
       <button onclick="setLang('en')" style="background:none;border:none;color:#3b7ea1;font-weight:bold;cursor:pointer;">EN</button>
-</div>
-<img alt="Bannière IArtisanale" src="banniere-v4.png"/>
-<a class="mail" href="mailto:contactiartisanale@gmail.com" style="display: block; margin: 1em auto; text-align: center; color: #3b7ea1; font-weight: bold; text-decoration: none;">✉️ Me contacter</a>
-</header>
-<main>
-<section>
-<h2>🌿 Mes créations IA</h2>
-<div class="grid">
-<div class="card">
-<h3>LES COMPAGNONS SILENCIEUX</h3>
-<a class="button" href="https://ko-fi.com/s/665c169a95" target="_blank">Voir sur Ko-fi</a>
-</div>
-<div class="card">
-<h3>HumAIn</h3>
-<p>À venir…</p>
-</div>
-<div class="card">
-<h3>Identités fictives</h3>
-<p>À venir…</p>
-</div>
-<div class="card">
-<h3>Murmures Numériques</h3>
-<a class="button" href="murmures.html">Découvrir</a>
-</div>
-</div>
-<div id="chatbot">
-<h2>🎙️ Test vocal d’un compagnon IA</h2>
-<div id="persona-name">...</div>
-<button class="button" onclick="startRecognition()">🎤 Parler</button>
-<div id="response"></div>
-</div>
-</section>
-</main>
-<footer style="text-align: center;">
-<p>IArtisanale est un projet d’exploration créative entre IA et humanité ...<br/>
+    </div>
+    <img src="banniere-v4.png" alt="Bannière IArtisanale" />
+    <a class="mail" href="mailto:contactiartisanale@gmail.com">✉️ Me contacter</a>
+  </header>
+
+  <main>
+    <section>
+      <h2>🌿 Mes créations IA</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>LES COMPAGNONS SILENCIEUX</h3>
+          <a class="button" href="https://ko-fi.com/s/665c169a95" target="_blank">Voir sur Ko-fi</a>
+        </div>
+        <div class="card">
+          <h3>HumAIn</h3>
+          <p>À venir…</p>
+        </div>
+        <div class="card">
+          <h3>Identités fictives</h3>
+          <p>À venir…</p>
+        </div>
+        <div class="card">
+          <h3>Murmures Numériques</h3>
+          <a class="button" href="murmures.html">Découvrir</a>
+        </div>
+      </div>
+
+      <div id="chatbot">
+        <h2>🎙️ Test vocal d’un compagnon IA</h2>
+        <div id="persona-name">...</div>
+        <button onclick="startRecognition()" class="button">🎤 Parler</button>
+        <div id="response"></div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>IArtisanale est un projet d’exploration créative entre IA et humanité ...<br/>
     Le futur n'existera pas sans l’une ni sans l’autre.</p>
-<p>– <strong>Le Promptologue –</strong></p>
-</footer>
-<script src="neurons.js"></script>
-<script>
+    <p>– <strong>Le Promptologue –</strong></p>
+  </footer>
+
+  <script src="neurons.js"></script>
+
+  <script>
     let lang = localStorage.getItem('lang') || (navigator.language.startsWith('fr') ? 'fr' : 'en');
 
     function setLang(l) {
