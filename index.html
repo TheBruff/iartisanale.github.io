@@ -1,10 +1,11 @@
 <!DOCTYPE html>
+
 <html lang="fr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>IArtisanale – IA faite main</title>
-  <style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>IArtisanale – IA faite main</title>
+<style>
     html, body {
       margin: 0;
       padding: 0;
@@ -14,6 +15,15 @@
     }
 
     #neurons-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      background-color: transparent;
+      pointer-events: none;
+    }
       position: fixed;
       top: 0;
       left: 0;
@@ -130,61 +140,64 @@
       background: #f0f0f0;
       font-size: 0.9em;
     }
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 0;
+    width: 100vw;
+    height: 100vh;
+    background: transparent;
+}
   </style>
 </head>
-
 <body>
-  <canvas id="neurons-bg"></canvas>
 
-  <header>
-    <div style="position: absolute; top: 1em; right: 1em;">
-      <button onclick="setLang('fr')" style="background:none;border:none;color:#3b7ea1;font-weight:bold;cursor:pointer;">FR</button> |
+  &lt;!-- 🌌 Canvas animé pour le fond neuronal --&gt;<canvas id="neurons-bg"></canvas>  &lt;!-- Fin du fond neuronal --&gt;
+
+<header>
+<div style="position: absolute; top: 1em; right: 1em;">
+<button onclick="setLang('fr')" style="background:none;border:none;color:#3b7ea1;font-weight:bold;cursor:pointer;">FR</button> |
       <button onclick="setLang('en')" style="background:none;border:none;color:#3b7ea1;font-weight:bold;cursor:pointer;">EN</button>
-    </div>
-    <img src="banniere-v4.png" alt="Bannière IArtisanale" />
-    <a class="mail" href="mailto:contactiartisanale@gmail.com">✉️ Me contacter</a>
-  </header>
-
-  <main>
-    <section>
-      <h2>🌿 Mes créations IA</h2>
-      <div class="grid">
-        <div class="card">
-          <h3>LES COMPAGNONS SILENCIEUX</h3>
-          <a class="button" href="https://ko-fi.com/s/665c169a95" target="_blank">Voir sur Ko-fi</a>
-        </div>
-        <div class="card">
-          <h3>HumAIn</h3>
-          <p>À venir…</p>
-        </div>
-        <div class="card">
-          <h3>Identités fictives</h3>
-          <p>À venir…</p>
-        </div>
-        <div class="card">
-          <h3>Murmures Numériques</h3>
-          <a class="button" href="murmures.html">Découvrir</a>
-        </div>
-      </div>
-
-      <div id="chatbot">
-        <h2>🎙️ Test vocal d’un compagnon IA</h2>
-        <div id="persona-name">...</div>
-        <button onclick="startRecognition()" class="button">🎤 Parler</button>
-        <div id="response"></div>
-      </div>
-    </section>
-  </main>
-
-  <footer>
-    <p>IArtisanale est un projet d’exploration créative entre IA et humanité ...<br/>
+</div>
+<img alt="Bannière IArtisanale" src="banniere-v4.png"/>
+<a class="mail" href="mailto:contactiartisanale@gmail.com">✉️ Me contacter</a>
+</header>
+<main>
+<section>
+<h2>🌿 Mes créations IA</h2>
+<div class="grid">
+<div class="card">
+<h3>LES COMPAGNONS SILENCIEUX</h3>
+<a class="button" href="https://ko-fi.com/s/665c169a95" target="_blank">Voir sur Ko-fi</a>
+</div>
+<div class="card">
+<h3>HumAIn</h3>
+<p>À venir…</p>
+</div>
+<div class="card">
+<h3>Identités fictives</h3>
+<p>À venir…</p>
+</div>
+<div class="card">
+<h3>Murmures Numériques</h3>
+<a class="button" href="murmures.html">Découvrir</a>
+</div>
+</div>
+<div id="chatbot">
+<h2>🎙️ Test vocal d’un compagnon IA</h2>
+<div id="persona-name">...</div>
+<button class="button" onclick="startRecognition()">🎤 Parler</button>
+<div id="response"></div>
+</div>
+</section>
+</main>
+<footer>
+<p>IArtisanale est un projet d’exploration créative entre IA et humanité ...<br/>
     Le futur n'existera pas sans l’une ni sans l’autre.</p>
-    <p>– <strong>Le Promptologue –</strong></p>
-  </footer>
-
-  <script src="neurons.js"></script>
-
-  <script>
+<p>– <strong>Le Promptologue –</strong></p>
+</footer>
+<script src="neurons.js"></script>
+<script>
     let lang = localStorage.getItem('lang') || (navigator.language.startsWith('fr') ? 'fr' : 'en');
 
     function setLang(l) {
