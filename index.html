@@ -148,19 +148,20 @@
     height: 100vh;
     background: transparent;
 }
-  </style>
+  
+    header, main, footer {
+      position: relative;
+      z-index: 2;
+    }
+</style>
 </head>
-<body>
-
-  &lt;!-- 🌌 Canvas animé pour le fond neuronal --&gt;<canvas id="neurons-bg"></canvas>  &lt;!-- Fin du fond neuronal --&gt;
-
-<header>
+<body><canvas id="neurons-bg"></canvas><header>
 <div style="position: absolute; top: 1em; right: 1em;">
 <button onclick="setLang('fr')" style="background:none;border:none;color:#3b7ea1;font-weight:bold;cursor:pointer;">FR</button> |
       <button onclick="setLang('en')" style="background:none;border:none;color:#3b7ea1;font-weight:bold;cursor:pointer;">EN</button>
 </div>
 <img alt="Bannière IArtisanale" src="banniere-v4.png"/>
-<a class="mail" href="mailto:contactiartisanale@gmail.com">✉️ Me contacter</a>
+<a class="mail" href="mailto:contactiartisanale@gmail.com" style="display: block; margin: 1em auto; text-align: center; color: #3b7ea1; font-weight: bold; text-decoration: none;">✉️ Me contacter</a>
 </header>
 <main>
 <section>
@@ -191,7 +192,7 @@
 </div>
 </section>
 </main>
-<footer>
+<footer style="text-align: center;">
 <p>IArtisanale est un projet d’exploration créative entre IA et humanité ...<br/>
     Le futur n'existera pas sans l’une ni sans l’autre.</p>
 <p>– <strong>Le Promptologue –</strong></p>
