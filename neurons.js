@@ -53,7 +53,7 @@
 
   function growNetwork(root, depth = 0) {
     if (depth >= config.maxDepth) return;
-    const branches = 1 + Math.floor(Math.random() * config.maxBranches);
+    const branches = Math.random() < 0.5 ? 1 : 2;
     for (let i = 0; i < branches; i++) {
       const angle = root.angle + (Math.random() - 0.5);
       const length = (Math.min(width, height) / 10) + Math.random() * (Math.min(width, height) / 6);
