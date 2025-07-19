@@ -1,4 +1,4 @@
-// neurons.js — Version 3 : fond neuronal organique avec splines tordues, expansion lente, et particules visibles
+// neurons.js — Version 3.1 : expansion étendue à tout l’écran, splines organiques, particules visibles
 (function () {
   const canvas = document.getElementById("neurons-bg");
   if (!canvas) return;
@@ -12,7 +12,7 @@
     duration: 90000,
     spawnDelay: 300,
     maxBranches: 3,
-    maxDepth: 8,
+    maxDepth: 10,
     nodeBaseSize: 2,
     colors: ['#61a8da', '#83e0f2', '#c080f7', '#ff80cc'],
     maxParticlesPerLink: 2
@@ -56,7 +56,7 @@
     const branches = 1 + Math.floor(Math.random() * config.maxBranches);
     for (let i = 0; i < branches; i++) {
       const angle = root.angle + (Math.random() - 0.5);
-      const length = 50 + Math.random() * 70;
+      const length = (Math.min(width, height) / 10) + Math.random() * (Math.min(width, height) / 6);
       const x = root.x + Math.cos(angle) * length;
       const y = root.y + Math.sin(angle) * length;
       const newNode = createNode(x, y, depth + 1);
@@ -147,7 +147,7 @@
   window.addEventListener("load", () => {
     resize();
     window.addEventListener("resize", resize);
-    console.log("✅ Fond neuronal v3 (splines, expansion, particules) chargé");
+    console.log("✅ Fond neuronal v3.1 (expansion large) chargé");
     requestAnimationFrame(animate);
   });
 })();
