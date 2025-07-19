@@ -1,4 +1,4 @@
-// neurons.js — Version organique corrigée avec déploiement progressif, lignes visibles, resize dynamique
+// neurons.js — Version 3 : fond neuronal organique avec splines tordues, expansion lente, et particules visibles
 (function () {
   const canvas = document.getElementById("neurons-bg");
   if (!canvas) return;
@@ -10,9 +10,9 @@
 
   const config = {
     duration: 90000,
-    spawnDelay: 100,
+    spawnDelay: 300,
     maxBranches: 3,
-    maxDepth: 5,
+    maxDepth: 8,
     nodeBaseSize: 2,
     colors: ['#61a8da', '#83e0f2', '#c080f7', '#ff80cc'],
     maxParticlesPerLink: 2
@@ -43,8 +43,8 @@
       size: config.nodeBaseSize + (1 - depth / config.maxDepth) * 4,
       links: [],
       angle: Math.random() * Math.PI * 2,
-      freq: 0.5 + Math.random(),
-      amp: 1 + Math.random(),
+      freq: 0.3 + Math.random() * 0.3,
+      amp: 0.5 + Math.random(),
       phase: Math.random() * Math.PI * 2
     };
     nodes.push(node);
@@ -56,7 +56,7 @@
     const branches = 1 + Math.floor(Math.random() * config.maxBranches);
     for (let i = 0; i < branches; i++) {
       const angle = root.angle + (Math.random() - 0.5);
-      const length = 40 + Math.random() * 60;
+      const length = 50 + Math.random() * 70;
       const x = root.x + Math.cos(angle) * length;
       const y = root.y + Math.sin(angle) * length;
       const newNode = createNode(x, y, depth + 1);
@@ -68,14 +68,29 @@
 
   function createParticles() {
     for (let link of links) {
+      const color = config.colors[Math.floor(Math.random() * config.colors.length)];
       for (let i = 0; i < config.maxParticlesPerLink; i++) {
         particles.push({
           link,
           t: Math.random(),
-          speed: 0.001 + Math.random() * 0.001
+          speed: 0.0008 + Math.random() * 0.001,
+          color
         });
       }
     }
+  }
+
+  function drawSpline(ctx, from, to, segments = 5) {
+    ctx.beginPath();
+    ctx.moveTo(from.x, from.y);
+    for (let i = 1; i < segments; i++) {
+      const t = i / segments;
+      const dx = (to.x - from.x) * t + (Math.random() - 0.5) * 10;
+      const dy = (to.y - from.y) * t + (Math.random() - 0.5) * 10;
+      ctx.lineTo(from.x + dx, from.y + dy);
+    }
+    ctx.lineTo(to.x, to.y);
+    ctx.stroke();
   }
 
   function animate(t) {
@@ -87,17 +102,11 @@
 
     for (let link of links) {
       if (now < link.to.visibleAt) continue;
-      const { from, to } = link;
       ctx.strokeStyle = "rgba(97,168,218,0.25)";
       ctx.lineWidth = 1.5;
       ctx.shadowColor = "rgba(97,168,218,0.2)";
       ctx.shadowBlur = 2;
-      ctx.beginPath();
-      const cx = (from.x + to.x) / 2 + (Math.random() - 0.5) * 4;
-      const cy = (from.y + to.y) / 2 + (Math.random() - 0.5) * 4;
-      ctx.moveTo(from.x, from.y);
-      ctx.quadraticCurveTo(cx, cy, to.x, to.y);
-      ctx.stroke();
+      drawSpline(ctx, link.from, link.to, 5);
       ctx.shadowBlur = 0;
     }
 
@@ -108,11 +117,10 @@
       const { from, to } = p.link;
       const x = from.x * (1 - p.t) + to.x * p.t;
       const y = from.y * (1 - p.t) + to.y * p.t;
-      const color = config.colors[Math.floor(Math.random() * config.colors.length)];
       ctx.beginPath();
       ctx.arc(x, y, 1.5, 0, Math.PI * 2);
-      ctx.fillStyle = color;
-      ctx.shadowColor = color;
+      ctx.fillStyle = p.color;
+      ctx.shadowColor = p.color;
       ctx.shadowBlur = 6;
       ctx.fill();
       ctx.shadowBlur = 0;
@@ -139,7 +147,7 @@
   window.addEventListener("load", () => {
     resize();
     window.addEventListener("resize", resize);
-    console.log("✅ Fond neuronal organique chargé (version corrigée)");
+    console.log("✅ Fond neuronal v3 (splines, expansion, particules) chargé");
     requestAnimationFrame(animate);
   });
 })();
